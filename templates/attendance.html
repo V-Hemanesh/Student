@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block page_title %}Attendance Management{% endblock %}
+{% block page_subtitle %}Take daily attendance and monitor records.{% endblock %}
+
+{% block content %}
+<section class="bottom-grid" style="grid-template-columns: 1fr;">
+    <div class="card form-panel">
+        <div class="card-header">
+            <h3>Take Attendance</h3>
+        </div>
+        
+        <form id="attendance-form">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <input type="text" id="attendance-search" class="search-input" placeholder="Search by name or ID...">
+                </div>
+                <div class="toolbar-right">
+                    <button type="button" id="btn-mark-all" class="btn-secondary">Mark All Present</button>
+                    <button type="button" id="btn-mark-none" class="btn-secondary">Mark All Absent</button>
+                    <div style="margin-left: 1rem; display: flex; align-items: center; gap: 10px;">
+                        <label for="attendance-date" style="font-weight: 500;">Date:</label>
+                        <input type="date" id="attendance-date" min="2026-05-01" max="2026-05-31" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px;" required>
+                        <span id="attendance-day-name" style="font-weight: 600; color: var(--primary);"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div style="padding: 1rem; background: var(--bg-body); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; font-weight: 500; font-size: 0.9rem;">
+                    <span>Total Semester Days (excl. Sundays): <strong style="color:var(--text-primary);">26</strong></span>
+                    <span>Remaining Days: <strong id="stats-remaining-days" style="color:var(--primary);">--</strong></span>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Current Attendance %</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendance-roster-body">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <div id="attendance-summary" style="font-weight: 600; color: var(--text-secondary);">
+                    Present: <span id="summary-present">0</span> | Absent: <span id="summary-absent">0</span>
+                </div>
+                <button type="submit" class="btn-primary" style="width: auto;">Submit Attendance</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Student History Modal -->
+<div id="student-history-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content card" style="max-width: 500px; width: 90%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1rem;">
+            <div>
+                <h3 id="history-student-name" style="margin-bottom: 0.25rem;">Student Name</h3>
+                <p id="history-student-id" style="font-size: 0.85rem; color: var(--text-secondary);">ID</p>
+            </div>
+            <button type="button" id="close-history-modal" class="btn-secondary" style="padding: 0.4rem 0.8rem;">Close</button>
+        </div>
+        
+        <div id="history-list-container" style="max-height: 500px; overflow-y: auto;">
+            <p id="history-loading" style="text-align: center; color: var(--text-secondary); padding: 2rem;">Loading calendar...</p>
+            <div id="history-calendar-view" style="display: none; flex-direction: column; gap: 1.5rem; padding-bottom: 1rem;">
+                <!-- Calendars injected via JS -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart College Dashboard</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <h2>EduDash</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="{{ url_for('dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                    <span class="icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="{{ url_for('manage_students') }}" class="nav-item {% if active_page == 'students' %}active{% endif %}">
+                    <span class="icon">🎓</span>
+                    Manage Students
+                </a>
+                <a href="{{ url_for('attendance') }}" class="nav-item {% if active_page == 'attendance' %}active{% endif %}">
+                    <span class="icon">📅</span>
+                    Attendance
+                </a>
+                <a href="{{ url_for('settings') }}" class="nav-item {% if active_page == 'settings' %}active{% endif %}">
+                    <span class="icon">⚙️</span>
+                    Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>{% block page_title %}{% endblock %}</h1>
+                    <p>{% block page_subtitle %}Welcome back, Administrator.{% endblock %}</p>
+                </div>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=2563eb&color=fff" alt="User Profile" class="avatar">
+                </div>
+            </header>
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <!-- Global Alert Modal -->
+    <div id="app-alert-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content card" style="text-align: center;">
+            <h3 id="app-alert-title">Notice</h3>
+            <p id="app-alert-message" style="margin: 1.5rem 0; color: var(--text-secondary);"></p>
+            <div class="modal-actions" style="justify-content: center;">
+                <button type="button" class="btn-primary" id="app-alert-close" style="min-width: 100px;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

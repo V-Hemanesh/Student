@@ -1,0 +1,313 @@
+{
+  "students": [
+    {
+      "id": "S2001",
+      "name": "Aarav Patel",
+      "major": "Computer Science",
+      "gpa": 7.81,
+      "status": "Good",
+      "days_present": 14,
+      "attendance": 82.4
+    },
+    {
+      "id": "S2002",
+      "name": "Priya Sharma",
+      "major": "Mechanical Engineering",
+      "gpa": 7.38,
+      "status": "Average",
+      "days_present": 15,
+      "attendance": 88.2
+    },
+    {
+      "id": "S2003",
+      "name": "Rahul Singh",
+      "major": "Electrical Engineering",
+      "gpa": 7.84,
+      "status": "Good",
+      "days_present": 16,
+      "attendance": 94.1
+    },
+    {
+      "id": "S2004",
+      "name": "Sneha Gupta",
+      "major": "Civil Engineering",
+      "gpa": 8.02,
+      "status": "Good",
+      "days_present": 9,
+      "attendance": 52.9
+    },
+    {
+      "id": "S2005",
+      "name": "Vikram Desai",
+      "major": "Computer Science",
+      "gpa": 7.82,
+      "status": "Good",
+      "days_present": 17,
+      "attendance": 100.0
+    },
+    {
+      "id": "S2006",
+      "name": "Neha Joshi",
+      "major": "Information Technology",
+      "gpa": 8.35,
+      "status": "Good",
+      "days_present": 17,
+      "attendance": 100.0
+    },
+    {
+      "id": "S2007",
+      "name": "Rohan Mehta",
+      "major": "Mechanical Engineering",
+      "gpa": 6.88,
+      "status": "Average",
+      "days_present": 16,
+      "attendance": 94.1
+    },
+    {
+      "id": "S2008",
+      "name": "Kavya Reddy",
+      "major": "Computer Science",
+      "gpa": 7.97,
+      "status": "Good",
+      "days_present": 16,
+      "attendance": 94.1
+    },
+    {
+      "id": "S2009",
+      "name": "Arjun Kumar",
+      "major": "Electrical Engineering",
+      "gpa": 8.02,
+      "status": "Good",
+      "days_present": 15,
+      "attendance": 88.2
+    },
+    {
+      "id": "S2010",
+      "name": "Ananya Iyer",
+      "major": "Civil Engineering",
+      "gpa": 9.4,
+      "status": "Excellent",
+      "days_present": 17,
+      "attendance": 100.0
+    }
+  ],
+  "attendance_records": {
+    "2026-05-01": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "absent",
+      "S2010": "present"
+    },
+    "2026-05-02": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-04": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "absent",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-05": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-06": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-07": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-08": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-09": {
+      "S2001": "absent",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-11": {
+      "S2001": "present",
+      "S2002": "absent",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-12": {
+      "S2001": "absent",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "absent",
+      "S2008": "present",
+      "S2009": "absent",
+      "S2010": "present"
+    },
+    "2026-05-13": {
+      "S2001": "absent",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-14": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-15": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "absent",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-16": {
+      "S2001": "present",
+      "S2002": "absent",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-18": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-19": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "absent",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    },
+    "2026-05-20": {
+      "S2001": "present",
+      "S2002": "present",
+      "S2003": "present",
+      "S2004": "present",
+      "S2005": "present",
+      "S2006": "present",
+      "S2007": "present",
+      "S2008": "present",
+      "S2009": "present",
+      "S2010": "present"
+    }
+  },
+  "total_class_days": 17,
+  "overall_attendance": 89.4,
+  "average_gpa": 7.95,
+  "upcoming_events": [
+    {
+      "date": "2026-05-25",
+      "name": "Midterm Exams Start"
+    },
+    {
+      "date": "2026-06-01",
+      "name": "Project Submissions"
+    }
+  ]
+}
