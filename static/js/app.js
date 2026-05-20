@@ -115,6 +115,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const ctx = document.getElementById('attendanceChart').getContext('2d');
                 if (attendanceChartInstance) attendanceChartInstance.destroy();
 
+                const orangeShades = [
+                    '#7c2d12', // darkest
+                    '#9a3412',
+                    '#c2410c',
+                    '#ea580c',
+                    '#f97316', // base
+                    '#fb923c',
+                    '#fdba74',
+                    '#fed7aa',
+                    '#ffedd5',
+                    '#fff7ed'  // lightest
+                ];
+
                 attendanceChartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -122,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         datasets: [{
                             label: data.datasets[0].label,
                             data: data.datasets[0].data,
-                            backgroundColor: '#f97316', // Orange color
+                            backgroundColor: orangeShades,
                             borderRadius: 6,
                             barPercentage: 0.6
                         }]
