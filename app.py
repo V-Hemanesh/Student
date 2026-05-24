@@ -1,6 +1,11 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_file
 import json
 import os
+import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
 
 app = Flask(__name__)
 DATA_FILE = os.path.join(os.path.dirname(__file__), 'data', 'mock_data.json')
@@ -94,14 +99,13 @@ def add_student():
     
     data["students"].append(student)
     
-    # Recalculate stats naively for demonstration
-    total_gpa = sum(float(s["gpa"]) for s in data["students"])
-    total_att = sum(float(s["attendance"]) for s in data["students"])
-    count = len(data["students"])
-    
-    if count > 0:
-        data["average_gpa"] = round(total_gpa / count, 2)
-        data["overall_attendance"] = round(total_att / count, 1)
+    # Recalculate stats using pandas
+    df = pd.DataFrame(data["students"])
+    if not df.empty:
+        df['gpa'] = pd.to_numeric(df['gpa'], errors='coerce')
+        df['attendance'] = pd.to_numeric(df['attendance'], errors='coerce')
+        data["average_gpa"] = float(round(df['gpa'].mean(), 2))
+        data["overall_attendance"] = float(round(df['attendance'].mean(), 1))
     else:
         data["average_gpa"] = 0
         data["overall_attendance"] = 0
@@ -121,14 +125,13 @@ def delete_student(student_id):
     if len(data["students"]) == initial_count:
         return jsonify({"error": "Student not found"}), 404
         
-    # Recalculate stats
-    total_gpa = sum(float(s["gpa"]) for s in data["students"])
-    total_att = sum(float(s["attendance"]) for s in data["students"])
-    count = len(data["students"])
-    
-    if count > 0:
-        data["average_gpa"] = round(total_gpa / count, 2)
-        data["overall_attendance"] = round(total_att / count, 1)
+    # Recalculate stats using pandas
+    df = pd.DataFrame(data["students"])
+    if not df.empty:
+        df['gpa'] = pd.to_numeric(df['gpa'], errors='coerce')
+        df['attendance'] = pd.to_numeric(df['attendance'], errors='coerce')
+        data["average_gpa"] = float(round(df['gpa'].mean(), 2))
+        data["overall_attendance"] = float(round(df['attendance'].mean(), 1))
     else:
         data["average_gpa"] = 0
         data["overall_attendance"] = 0
@@ -242,47 +245,84 @@ def submit_attendance():
     save_data(data)
     return jsonify({"message": "Attendance saved successfully"}), 200
 
-@app.route('/api/performance-trend')
-def get_performance_trend():
+@app.route('/api/performance-chart', methods=['GET'])
+def get_performance_chart():
     data = load_data()
     if "error" in data:
         return jsonify(data), 404
         
-    students = data.get("students", [])
-    status_counts = {"Excellent": 0, "Good": 0, "Average": 0, "Needs Improvement": 0}
-    for s in students:
-        status = s.get("status", "Needs Improvement")
-        if status in status_counts:
-            status_counts[status] += 1
-            
-    return jsonify({
-        "labels": list(status_counts.keys()),
-        "datasets": [{
-            "label": "Number of Students",
-            "data": list(status_counts.values())
-        }]
-    })
+    df = pd.DataFrame(data.get("students", []))
+    if df.empty:
+        return jsonify({"error": "No data"}), 404
+        
+    status_counts = df['status'].value_counts()
+    categories = ["Excellent", "Good", "Average", "Needs Improvement"]
+    counts = [status_counts.get(cat, 0) for cat in categories]
+    
+    fig, ax = plt.subplots(figsize=(4, 4))
+    colors = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
+    
+    if sum(counts) > 0:
+        wedges, texts, autotexts = ax.pie(counts, labels=categories, colors=colors, autopct='%1.1f%%', 
+                                          startangle=90, textprops=dict(color="w"))
+        for text in texts:
+            text.set_color('#64748b')
+            text.set_fontsize(9)
+        for autotext in autotexts:
+            autotext.set_fontsize(9)
+            autotext.set_weight('bold')
+    else:
+        ax.text(0.5, 0.5, 'No Data', ha='center', va='center', color='#64748b')
+        ax.axis('off')
+        
+    plt.tight_layout()
+    img = io.BytesIO()
+    fig.savefig(img, format='png', transparent=True, bbox_inches='tight', dpi=120)
+    img.seek(0)
+    plt.close(fig)
+    return send_file(img, mimetype='image/png')
 
-@app.route('/api/attendance-trend')
+@app.route('/api/attendance-trend', methods=['GET'])
 def get_attendance_trend():
     data = load_data()
     if "error" in data:
         return jsonify(data), 404
         
-    students = data.get("students", [])
-    # Sort by attendance descending and take top 7
-    sorted_students = sorted(students, key=lambda x: float(x.get("attendance", 0)), reverse=True)[:7]
+    df = pd.DataFrame(data.get("students", []))
+    if df.empty:
+        return jsonify({"error": "No data"}), 404
+        
+    # Get top 7 students
+    df['attendance'] = pd.to_numeric(df['attendance'], errors='coerce').fillna(0)
+    top_students = df.nlargest(7, 'attendance')
     
-    labels = [s.get("name").split()[0] for s in sorted_students] # First name for label
-    attendance_data = [s.get("attendance") for s in sorted_students]
+    fig, ax = plt.subplots(figsize=(6, 3.5))
     
-    return jsonify({
-        "labels": labels,
-        "datasets": [{
-            "label": "Attendance %",
-            "data": attendance_data
-        }]
-    })
+    orange_shades = ['#7c2d12', '#9a3412', '#c2410c', '#ea580c', '#f97316', '#fb923c', '#fdba74']
+    colors = orange_shades[:len(top_students)]
+    
+    ax.bar(top_students['name'].apply(lambda x: x.split()[0]), top_students['attendance'], color=colors, width=0.5, edgecolor='none')
+    
+    # Styling
+    ax.set_ylim(0, 100)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_color('#e2e8f0')
+    ax.spines['bottom'].set_color('#e2e8f0')
+    ax.tick_params(axis='x', colors='#64748b', length=0, pad=8)
+    ax.tick_params(axis='y', colors='#64748b', length=0, pad=8)
+    ax.set_yticks(range(0, 101, 10))
+    ax.grid(axis='both', color='#f1f5f9', linestyle='-', linewidth=1)
+    ax.set_axisbelow(True)
+    
+    plt.tight_layout()
+    
+    img = io.BytesIO()
+    fig.savefig(img, format='png', transparent=True, bbox_inches='tight', dpi=120)
+    img.seek(0)
+    plt.close(fig)
+    
+    return send_file(img, mimetype='image/png')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

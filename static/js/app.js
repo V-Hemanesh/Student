@@ -1,11 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Theme colors for Chart.js
-    Chart.defaults.color = '#64748b'; 
-    Chart.defaults.borderColor = '#e2e8f0'; 
-    Chart.defaults.font.family = "'Inter', sans-serif";
-
-    let performanceChartInstance = null;
-    let attendanceChartInstance = null;
+    // Chart.js has been replaced with server-side Matplotlib image generation
 
     // Global Alert Function
     window.showAppAlert = function(message, title = "Notice") {
@@ -24,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Element Checks
     const hasDashboardStats = !!document.getElementById('total-students');
-    const hasPerformanceChart = !!document.getElementById('performanceChart');
-    const hasAttendanceChart = !!document.getElementById('attendanceChart');
+    const hasPerformanceChart = !!document.getElementById('performanceChartImg');
+    const hasAttendanceChart = !!document.getElementById('attendanceChartImg');
     const hasStudentsTable = !!document.getElementById('students-table-body');
     const hasAddStudentForm = !!document.getElementById('add-student-form');
     const hasEventsList = !!document.getElementById('events-list');
@@ -34,8 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadDashboardData() {
         if(hasDashboardStats || hasEventsList) fetchStats();
         if(hasStudentsTable || hasAttendanceForm) fetchStudents();
-        if(hasPerformanceChart) fetchPerformanceTrend();
-        if(hasAttendanceChart) fetchAttendanceTrend();
+        if(hasPerformanceChart || hasAttendanceChart) fetchCharts();
     }
 
     function fetchStats() {
@@ -70,84 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    function fetchPerformanceTrend() {
-        fetch('/api/performance-trend')
-            .then(res => res.json())
-            .then(data => {
-                const ctx = document.getElementById('performanceChart').getContext('2d');
-                if (performanceChartInstance) performanceChartInstance.destroy();
-                
-                performanceChartInstance = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: data.datasets[0].label,
-                            data: data.datasets[0].data,
-                            backgroundColor: [
-                                '#10b981', // Excellent (Green)
-                                '#3b82f6', // Good (Blue)
-                                '#f59e0b', // Average (Yellow)
-                                '#ef4444'  // Needs Improvement (Red)
-                            ],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { 
-                            legend: { 
-                                position: 'right',
-                                labels: { color: '#64748b', font: { family: "'Inter', sans-serif" } }
-                            } 
-                        }
-                    }
-                });
-            });
-    }
-
-    function fetchAttendanceTrend() {
-        fetch('/api/attendance-trend')
-            .then(res => res.json())
-            .then(data => {
-                const ctx = document.getElementById('attendanceChart').getContext('2d');
-                if (attendanceChartInstance) attendanceChartInstance.destroy();
-
-                const orangeShades = [
-                    '#7c2d12', // darkest
-                    '#9a3412',
-                    '#c2410c',
-                    '#ea580c',
-                    '#f97316', // base
-                    '#fb923c',
-                    '#fdba74',
-                    '#fed7aa',
-                    '#ffedd5',
-                    '#fff7ed'  // lightest
-                ];
-
-                attendanceChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: data.datasets[0].label,
-                            data: data.datasets[0].data,
-                            backgroundColor: orangeShades,
-                            borderRadius: 6,
-                            barPercentage: 0.6
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: { y: { beginAtZero: true, min: 0, max: 100 } }
-                    }
-                });
-            });
+    function fetchCharts() {
+        const perfImg = document.getElementById('performanceChartImg');
+        const attImg = document.getElementById('attendanceChartImg');
+        const t = new Date().getTime();
+        if (perfImg) perfImg.src = '/api/performance-chart?t=' + t;
+        if (attImg) attImg.src = '/api/attendance-trend?t=' + t;
     }
 
     if(hasAttendanceForm) {
