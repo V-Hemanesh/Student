@@ -63,7 +63,7 @@ def get_dashboard_stats():
         "upcoming_events": data.get("upcoming_events", [])
     })
 
-@app.route('/api/students', methods=['GET', 'POST'])
+@app.route('/api/students', methods=['GET'])
 def api_manage_students():
     data = load_data()
     if "error" in data:
